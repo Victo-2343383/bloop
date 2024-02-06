@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/ibite123/public_html/
+    - cp -a /home/ibit123/repositories/Victo-2343383hub.io/ /home/ibit123/ $DEPLOYPATH

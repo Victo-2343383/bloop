@@ -1,0 +1,117 @@
+body {
+    overflow: hidden;
+}
+article{
+    margin: 0;
+    margin-top: 80px;
+    margin-left: 3vw;
+    background-repeat: no-repeat;
+    background-size: 100%;
+
+    width: 97vw;
+    height: calc(100vh - 80px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* animation: background-image 45s linear 0s infinite forwards;     */
+}
+.article-title{
+    font-size: 3em;
+    font-family: 'Dela Gothic One', cursive;
+    text-align: center;
+    margin-top: 25px;
+    color: rgb(220, 245, 243);
+    text-shadow: 0px 0px 50px black;
+}
+.article-title *{
+    margin: 0px
+}
+.article-title h2{
+    font-size: 1em;
+}
+
+#start-exploring{
+    font-family: 'Anton', sans-serif;
+    color: rgb(255, 154, 223);
+    font-size: 2.5em;
+    margin-top: 100px;
+    background-color: white;
+    width: 25vw;
+    text-shadow: 5px 5px 0px rgb(107, 59, 59);
+    box-shadow: 0px 0px 15px black;
+    text-align: center;
+    border: 2px solid rgb(51, 51, 51);
+    border-radius: 15px;
+
+    transition: all;
+    transition-duration: .5s;
+}
+article a {
+    width: 25vw;
+    height: 2.5em;
+}
+#start-exploring:hover{
+    font-size: calc(3.5em - 5px);
+    color: rgb(255, 69, 69);
+}
+
+#img-bg{
+    /* display: grid; */
+    /* grid-template-columns: calc(1920px / 100vh) calc(1920px / 100vh) calc(1920px / 100vh) calc(1920px / 100vh) calc(1920px / 100vh) calc(1920px / 100vh); */
+    display: flex;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: -1;
+
+    object-fit: none;
+
+    animation: background-image 45s cubic-bezier(0.165, 0.84, 0.44, 1) 0s infinite forwards;
+}
+.img-bg{
+    /* grid-row-start: 1; */
+    margin-right: calc(100vw - 1920px);
+
+    object-fit: none;
+    object-position: 0 -15vh;
+}
+
+
+
+@keyframes background-image{
+    0%{
+        left: 0vw;
+    }
+    19%{
+        left: 0vw;
+    }
+    21%{
+        left: -100vw;
+    }
+    39%{
+        left: -100vw;
+    }
+    41%{
+        left: -200vw;
+    }
+    59%{
+        left: -200vw;
+    }
+    61%{
+        left: -300vw;
+    }
+    79%{
+        left: -300vw;
+    }
+    81%{
+        left: -400vw;
+    }
+    98%{
+        left: -400vw;
+    }
+    100%{
+        left: 0vw;
+    }
+}

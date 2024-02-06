@@ -1,0 +1,184 @@
+/* TEXT */
+* {
+    font-family: 'Pixelify Sans', sans-serif;
+}
+/* %TEXT% */
+
+
+body{
+    background-color: rgb(99, 65, 58);
+    margin: 0;
+}
+#SoDThumbnail{
+    image-rendering: pixelated;
+    width: 3vw;
+    background-color: rgb(51, 21, 21);
+    border: 2px solid white;
+    border-radius: 15px;
+    padding: 1vh;
+    cursor: pointer;
+
+    transition: all;
+    transition-duration: 250ms;
+}
+#SoDThumbnail:hover{
+    width: 3.1vw;
+    box-shadow: 0px 0px 15px;
+    text-shadow: 0px 0px 5px white;
+}
+#title{
+    margin-left: 1vw;
+    font-size: 5.75vw;
+    color: rgb(255, 236, 158);
+    display: inline;
+    margin: 0;
+    text-shadow: 5px 5px 0px rgb(40, 5, 5);
+}
+header{
+    background-color: rgb(75, 19, 28);
+    border-bottom: 2px solid rgb(255, 236, 158);
+    border-left: 2px solid rgb(255, 236, 158);
+    box-shadow: 0px 2px 0px black;
+    border-bottom-left-radius: 15px;
+    padding-left: 1vw;
+    margin-left: 5vw;
+}
+#prompt{
+    color: rgb(255, 236, 215);
+    display: inline;
+    margin: 0;
+    text-shadow: 2px 2px 0px rgb(40, 5, 5);
+    box-shadow: 0px 2px 0px black;
+    width: 40vw;
+    border-bottom: 4px solid rgb(255, 236, 215);
+    text-align: center;
+    font-size: 2.5em;
+    margin-top: 5vh;
+}
+article{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* archives */
+#archive-list{
+    margin-top: 2vh;
+}
+.city{
+    display: flex;
+    background-color: rgb(84, 32, 56);
+    border: 2px solid rgb(255, 255, 162);
+    width: 70vw;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10px;
+}
+.city-title{
+    font-size: 2em;
+    color: white;
+    text-shadow: 0px 0px 15px black;
+}
+.city-button{
+    color: white;
+    text-shadow: 2px 2px 0px black;
+    cursor: pointer;
+
+    transition: all;
+    transition-duration: 500ms;
+}
+.city-button:hover{
+    text-shadow: 4px 4px 0px black;
+    color: rgb(165, 113, 122);
+}
+/* ---------------------------CITY EXPLORER------------------- */
+#city-explorer{
+    display: none;
+    justify-content: center;
+}
+#people-holder{
+    background-color: rgb(35, 2, 1);
+    border: 2px solid black;
+    width: 80vw;
+    padding: 1vw;
+}
+.person{
+    margin-bottom: 2vh;
+}
+.person-title{
+    font-size: 1.5em;
+    background-color: rgb(255, 207, 217);
+    border-radius: 25px;
+    border: 3px solid white;
+    padding-left: 2vw;
+    box-shadow: 5px 5px 5px black;
+    transition: all;
+    transition-duration: 250ms;
+    cursor: pointer;
+}
+.person-title *{
+    display: inline;
+    margin-right: 1vw;
+}
+.person-title:hover{
+    background-color: rgb(147, 93, 103);
+}
+.person-attributes{
+    color: white;
+    overflow: hidden;
+    height: 0vh;
+}
+.person-subdivider{
+    display: flex;
+    justify-content: space-around;
+    text-wrap: wrap;
+}
+.person-left, .person-right{
+    width: 40vw;
+}
+.edit-button{
+    background-color: rgb(33, 0, 0);
+    border: 2px solid white;
+    width: 8vw;
+    text-align: center;
+    border-radius: 10px;
+    cursor:pointer;
+
+    transition: all;
+    transition-duration: 500ms;
+}
+.edit-button:hover{
+    background-color: rgb(108, 52, 52);
+    box-shadow: 0px 0px 8px white;
+}
+
+#generate-save-button{
+    color: white;
+    cursor:pointer;
+    width: fit-content;
+
+    transition: all;
+    transition-duration: 500ms;
+}
+#generate-save-button:hover{
+    color: rgb(255, 223, 223);
+    text-shadow: 0px 0px 15px black;
+}
+#load-button{
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 8px;
+    align-self: center;
+    width: fit-content;
+    padding: 2px;
+    cursor: pointer;
+
+    transition: all;
+    transition-duration: 500ms;
+}
+#load-button:hover{
+    /* color: rgb(117, 117, 117); */
+    /* background-color: rgb(186, 186, 186); */
+    box-shadow: 3px 3px 0px black;
+    border-radius: 3px;
+}
