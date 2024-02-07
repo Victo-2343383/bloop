@@ -23,9 +23,10 @@
     <h1 id="title">BLOOP</h1>
 
     <div id="console">
+        <div id="bob-effect"></div>
         <div id="logs"></div>
         <div id="input-box">
-            <p id="pointer">/></p>
+            <p id="pointer">/ $ </p>
             <p id="input">type 'help' for help...</p>
         </div>
     </div>

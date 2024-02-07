@@ -7,12 +7,15 @@ document.onkeydown = function(key){
         RmInput();
     }
     else if (key.keyCode == 13){
+
         history[history.length-1] = input;
         history[history.length] = "";
         cursor = history.length-1;
         CommandStep0(input);
         input = "";
         UpdateText();
+        let logs = document.getElementById("logs");
+        logs.scrollTop = logs.scrollHeight;
     }
     else if (key.keyCode == 32){
         AddInput(" ");
@@ -76,9 +79,11 @@ function UpdateText(){
     if (input == ""){
         inputDisplay.innerText = "type 'help' for help...";
     }
-    else{
-        inputDisplay.innerText = input + "<";
+    else if (structure.root.system["toggle-cursor.exec"].value){
+            inputDisplay.innerText = input + "<";
     }
-
+    else{
+        inputDisplay.innerText = input;
+    }
 }
 UpdateText();

@@ -6,6 +6,7 @@ function InitScreen(){
     for (let i = 0; i < window.screen.height; i = i+step){
 
         let newElement = document.createElement("div")
+        newElement.className = "tv-line";
         newElement.style.height = step+"px";
         newElement.style.width = "100vw";
 
