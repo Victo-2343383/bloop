@@ -23,3 +23,6 @@ function InitScreen(){
     }
 }
 InitScreen();
+function DeleteSelf(){
+    event.target.remove();
+}

@@ -85,19 +85,47 @@ body{
     margin: 0;
     margin-left: 1vw;
     text-wrap: normal;
+    cursor: pointer;
 
     animation: normal;
     transition: all;
-    animation-duration: 500ms;
-    transition-duration: 500ms;
+    animation-duration: 250ms;
+    transition-duration: 250ms;
+}
+.white:hover{
+    background-color: #ff0000;
 }
 .red{
     color: red;
     text-shadow: 0px 0px 10px #ff7171;
     text-shadow: 3px 3px #3a3a3a;
 }
+.red:hover{
+    background-color: #545454;
+}
 .gray{
     color: gray;
     text-shadow: 0px 0px 5px gray;
     text-shadow: 3px 3px #3a3a3a;
+}
+.gray:hover{
+    background-color: #5e0000;
+}
+
+/* COMMAND HIGHLIGHTER */
+.global{
+    color: #55d4ff;
+    text-shadow: 0px 0px 10px #55d4ff;
+}
+.specific-command{
+    color: #8560ff;
+    text-shadow: 0px 0px 10px #8560ff;
+}
+.file{
+    color: #ff9655;
+    text-shadow: 0px 0px 5px #ff9655;
+}
+.directory{
+    color: #ff9de8;
+    text-shadow: 0px 0px 10px #ff9de8;
 }

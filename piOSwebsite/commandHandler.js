@@ -17,7 +17,7 @@ let structure = {
                     "Use with no argument to toggle on or off.",
                     "Use 'status' argument to get status.",
                 ],
-                "value": true,
+                "value": false,
             }
         },
         "website"   : {
@@ -39,8 +39,80 @@ let structure = {
                 "get-price.exec" :{
                     "ext":"exec",
                     "help" : [
-                        "Just enter the name of the asset you wanna lookup the price for (ex: >get-price astral-texture.html)"
+                        "Just enter the name of the asset you wanna lookup the price for (ex: $ get-price astral-texture.html)"
                     ]
+                },
+                "not-for-sale" : {
+                    "regex.exec" : {
+                        "ext":"exec",
+                        "help" : [
+                            "Use this just like an 'ls' command.",
+                            "Use 'regex match (arg)' to show all files or folder containing the argument",
+                            "Use 'regex preset (preset)' to use a RegEx preset to search with",
+                            "Use 'regex custom' to pop-up a window and input your own RegEx",
+                            "-----RegEx presets-----",
+                            "'file' - returns all files (searches for anything with a '.'",
+                            "'folder' - returns all folders (searches for anything that doesn't have a '.'"
+                        ]
+                    },
+                    "play.exec" :{
+                        "ext":"exec",
+                        "help" : [
+                            "'play (file name)' to play a file with the .audio extension"
+                        ]
+                    },
+                    "stop.exec" :{
+                        "ext":"exec",
+                        "help" : [
+                            "'stop (file name)' to stop any audio file currently playing."
+                        ]
+                    },
+                    "describe.exec" :{
+                        "ext":"exec",
+                        "help" : [
+                            "'describe (file name)' to read the description of a file"
+                        ]
+                    },
+                    "misconception.audio" : {
+                        "ext": "audio",
+                        "file-path": "assets/Misconception.mp3",
+                        "description": "This piano piece was a lot of fun to make. I was experimenting with using a lot of polyrhythms, it uses mostly 4/4 and 3/4. I asked for a lot of feed back from my friends through the making of it, so it's not all from my head ;p",
+                    },
+                    "revelations.audio" : {
+                        "ext": "audio",
+                        "file-path": "assets/Revelations.mp3",
+                        "description": "I just made this one to prove to my friends that songs in 5/4 sound like they're trying to get you by surprise.",
+                    },
+                    "fall-of-the-empire.audio" : {
+                        "ext": "audio",
+                        "file-path": "assets/FallOfTheEmpire.mp3",
+                        "description": "This one is just a shitty sounding piano piece I made that I changed to make it sound spooky. I like the heavily distorted and untuned piano at the end, it's like a bunch of souls crying for help.",
+                    },
+                    "valse-tournante.audio" : {
+                        "ext": "audio",
+                        "file-path": "assets/ValseTournante.mp3",
+                        "description": "Composed in a day. Still to this day, idk how I did it.",
+                    },
+                    "backrooms.audio" : {
+                        "ext": "audio",
+                        "file-path": "assets/BackroomsBeLike.mp3",
+                        "description": "Funny percussion song I made with the backrooms in mind.",
+                    },
+                    "fuzzy-mind.audio" : {
+                        "ext": "audio",
+                        "file-path": "assets/FuzzyMind.mp3",
+                        "description": "Probably the piano piece I'm the most proud of.",
+                    },
+                    "ignorant-soul.audio" : {
+                        "ext": "audio",
+                        "file-path": "assets/IgnorantSoul2.mp3",
+                        "description": "First ever song that I made with my guitar. It's not finished and I don't think I'll ever finish it.",
+                    },
+                    "danse-macabre.audio" : {
+                        "ext": "audio",
+                        "file-path": "assets/DanseMacabre.mp3",
+                        "description": "Some experiment I made with my guitar. I don't remember what I was trying sadly.",
+                    },
                 },
                 "astral-texture.html" : {
                     "ext":"html",
@@ -133,10 +205,10 @@ let structure = {
                 "jstestingpage.html": {
                     "url.data": "https://i-bite-stand-back.com/js%20test/Js%20test.html",
                 },
-                "licensekeyvalidator.html":{
+                "license-key-validator.html":{
                     "url.data": "https://i-bite-stand-back.com/HTML%20Specifics/key%20validator.html",
                 },
-                "psexample.html":{
+                "ps-example.html":{
                     "url.data": "https://i-bite-stand-back.com/particle%20system/PS.html"
                 },
                 "ttt.html":{
@@ -145,7 +217,7 @@ let structure = {
                 "nothing.html":{
                     "url.data": "https://i-bite-stand-back.com/nothing/ModeSelect.html"
                 },
-                "sodarchivetool.html":{
+                "sod-archive-tool.html":{
                     "url.data": "https://i-bite-stand-back.com/SoD%20tool/SoD_main.html"
                 }
             },
@@ -155,7 +227,8 @@ let structure = {
 }
 let directory = structure.root;
 let directoryString= "/";
-let pointer = document.getElementById("pointer")
+let pointer = document.getElementById("pointer");
+let audio;
 
 let regex = {
     "file"  : /^.+\..{3,4}$/i, //abc.abc(d) /(file)/
@@ -165,6 +238,7 @@ let regex = {
 //----------------------------------Utils---------------------------------
 function Log(message, type){
     let newElement = document.createElement("p");
+    newElement.setAttribute("onclick", "DeleteSelf()")
     let parent = document.getElementById("logs");
     if (type == 0){
         newElement.innerText = message;
@@ -249,12 +323,11 @@ function GetDir(path){
         }
     }
 
+    console.log("GetDir = " + tempDirString + ";" + dirExists)
     if (dirExists){
-        console.log("directory found: " + tempDirString)
         return tempDirString;
     }
     else{
-        console.log("directory error in GetDir()")
         return "error";
     }
 
@@ -482,6 +555,15 @@ function CommandStep0(input){
                 else if (array[0] == "toggle-cursor"){
                     ToggleCursor(array[1]);
                 }
+                else if (array[0] == "play"){
+                    Play(array[1]);
+                }
+                else if (array[0] == "describe"){
+                    Describe(array[1]);
+                }
+                else if (array[0] == "stop"){
+                    Stop(array[1]);
+                }
                 else{
                     Log("File " + array[0] + ".exec may be corrupted or contain invalid data. Execution failed.", 1);
                 }
@@ -509,6 +591,7 @@ function Help(){
     Log(".html : Openable page", 0)
     Log(".data : Data for the parent folder (often URLs)", 0)
     Log(".exec : Folder-specific command", 0)
+    Log(".audio : audio file...", 0)
 }
 function ChangeDirectory(path){
     path = GetDir(path);
@@ -615,6 +698,59 @@ function GetPrice(input) {
     }
     catch{
         Log("Invalid input : " + input, 1);
+    }
+}
+function Play(file){
+    if (file == "help"){
+        Log ("play help", 2)
+        Log(directory["play.exec"]["help"][0], 0)
+    }
+    else{
+        try{
+            if (file.match(/^[^/]+\.audio/i)){
+                Log("play " + file, 2);
+                Log("Playing : " + file, 0);
+                console.log("playing audio...")
+                audio = new Audio(directory[file]["file-path"])
+                audio.play();
+            }
+            else{
+                Log("Invalid file name : " + file, 1);
+            }
+        }
+        catch{
+            Log("Something went wrong...", 1);
+        }
+    }
+}
+function Stop(arg){
+    if (arg == "help"){
+        Log ("stop help", 2)
+        Log(directory["stop.exec"]["help"][0], 0)
+    }
+    else{
+        audio.pause();
+    }
+
+}
+function Describe(file){
+    if (file == "help"){
+        Log ("describe help", 2)
+        Log(directory["describe.exec"]["help"][0], 0)
+    }
+    else{
+        try{
+            if (file.match(/^[^/]+\..+/i)){
+                Log("describe "+file, 2);
+                Log(directory[file]["description"], 0);
+            }
+            else{
+                Log("Invalid file name : " + file, 1);
+            }
+        }
+        catch{
+            Log("Something went wrong...", 1);
+        }
     }
 }
 //--------------------------------SYSTEM COMMANDS-------------------------

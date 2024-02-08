@@ -79,11 +79,55 @@ function UpdateText(){
     if (input == ""){
         inputDisplay.innerText = "type 'help' for help...";
     }
-    else if (structure.root.system["toggle-cursor.exec"].value){
-            inputDisplay.innerText = input + "<";
-    }
     else{
-        inputDisplay.innerText = input;
+        let processedText = ProcessText(input);
+        inputDisplay.innerHTML = processedText;
+        if (structure.root.system["toggle-cursor.exec"].value){
+            inputDisplay.innerText += "<";
+        }
+
     }
 }
 UpdateText();
+function ProcessText(text){
+    let array = Deconcat(text, " ");
+
+    //check for globals
+    for (let i = 0; i < structure.globals.length; i++){
+        let index = text.search(structure.globals[i])
+        if (index != -1){
+            text = text.substring(0, index) + '<span class="global">' + structure.globals[i]+"</span>" + text.substring(index + structure.globals[i].length);
+        }
+    }
+
+    //check for folder-specific commands
+    for (let key in directory){
+        if (key.match(regex.file) && directory[key].ext == "exec"){
+            let lookFor = key.substring(0,key.length-5);
+            let index = text.search(lookFor);
+            if (index != -1){
+                text = text.substring(0, index) + '<span class="specific-command">' + lookFor +"</span>" + text.substring(index + lookFor.length);
+            }
+        }
+    }
+
+    //check for directory
+    for (let i = 0; i < array.length; i++){
+        if (GetDir(array[i]) != "error"){
+            let index = text.search(array[i])
+            if (index != -1){
+                text = text.substring(0, index) + '<span class="directory">' + array[i]+"</span>" + text.substring(index + array[i].length);
+            }
+        }
+    }
+
+    //check for files
+    for (let key in directory){
+        let index = text.search(key)
+        if (index != -1 && !(key.match(regex.folder))){
+            text = text.substring(0, index) + '<span class="file">' + key +"</span>" + text.substring(index + key.length);
+        }
+    }
+
+    return text;
+}
