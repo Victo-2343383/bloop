@@ -9,10 +9,11 @@
     scrollbar-width: none;  /* Firefox */
 }
 *{
+    --color-theme: #a1a1a1;
     font-family: 'Share Tech Mono', monospace;
     text-decoration: none;
-    color: #c5c5c5;
-    text-shadow: 3px 3px #3a3a3a;
+    color: var(--color-theme);
+
 }
 #tv-effect{
     position: absolute;
@@ -30,24 +31,33 @@
     mix-blend-mode: difference;
 }
 body{
-    background-color: black;
+    background-image: radial-gradient( closest-corner, #604c4c, #1a1414, black);
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    margin: 0;
 }
 #title{
     font-size: 6em;
     text-align: center;
     justify-content: center;
     margin: 0;
-    text-shadow: 0px 0px 10px white;
 }
 #console{
+    background-color: black;
     align-self: center;
     justify-self: center;
     width: 70vw;
-    border: 5px solid #c5c5c5;
-    box-shadow: 0px 0px 20px white;
+    border: 5px solid var(--color-theme);
     overflow-x: hidden;
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px black;
+
+    transition: all;
+    transition-duration: 500ms;
+}
+#console:hover{
+    box-shadow: 10px 10px 15px black;
 }
 #bob-effect{
     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
@@ -72,7 +82,7 @@ body{
 
 #input-box{
     display: flex;
-    border: 3px solid #c5c5c5;
+    border-top: 3px solid var(--color-theme);
     padding: 5px;
 }
 #input{
@@ -98,34 +108,50 @@ body{
 .red{
     color: red;
     text-shadow: 0px 0px 10px #ff7171;
-    text-shadow: 3px 3px #3a3a3a;
+    /*text-shadow: 3px 3px #3a3a3a;*/
 }
 .red:hover{
     background-color: #545454;
 }
 .gray{
     color: gray;
-    text-shadow: 0px 0px 5px gray;
-    text-shadow: 3px 3px #3a3a3a;
+    /*text-shadow: 0px 0px 5px gray;*/
+    /*text-shadow: 3px 3px #3a3a3a;*/
 }
 .gray:hover{
     background-color: #5e0000;
 }
 
 /* COMMAND HIGHLIGHTER */
+
+* p{
+    --color-all: #a6ffe7;
+    --color-global: var(--color-all);
+    --color-specifics: var(--color-all);
+    --color-file: #2f53b9;
+    --color-dir: #ffee99;
+    --color-glow: rgba(187, 235, 255, 0);
+
+    animation: normal;
+    transition: all;
+    animation-duration: 250ms;
+    transition-duration: 250ms;
+}
+
 .global{
-    color: #55d4ff;
-    text-shadow: 0px 0px 10px #55d4ff;
+    color: var(--color-global);
+    text-shadow: 0px 0px 10px var(--color-global);
+    background-image: radial-gradient(circle, var(--color-glow), rgba(0, 0, 0, 0));
 }
 .specific-command{
-    color: #8560ff;
-    text-shadow: 0px 0px 10px #8560ff;
+    color: var(--color-specifics);
+    text-shadow: 0px 0px 10px var(--color-specifics);
 }
 .file{
-    color: #ff9655;
-    text-shadow: 0px 0px 5px #ff9655;
+    color: var(--color-file);
+    text-shadow: 0px 0px 5px var(--color-file);
 }
 .directory{
-    color: #ff9de8;
-    text-shadow: 0px 0px 10px #ff9de8;
+    color: var(--color-dir);
+    text-shadow: 0px 0px 10px var(--color-dir);
 }

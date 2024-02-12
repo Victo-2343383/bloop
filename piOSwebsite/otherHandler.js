@@ -1,6 +1,6 @@
 function InitScreen(){
     let even = true;
-    let step = 3;
+    let step = 2;
 
     let parent = document.getElementById("tv-effect")
     for (let i = 0; i < window.screen.height; i = i+step){
@@ -11,7 +11,7 @@ function InitScreen(){
         newElement.style.width = "100vw";
 
         if (even){
-            newElement.style.backgroundColor = "rgba(0,0,0,0.2)";
+            newElement.style.backgroundColor = "rgba(0,0,0,0.5)";
             even = false;
         }
         else {

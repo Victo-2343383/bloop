@@ -7,6 +7,7 @@ let structure = {
         "ls",
         "clear",
         "open",
+        "alt"
     ],
     "root":{
         "system"    : {
@@ -18,6 +19,15 @@ let structure = {
                     "Use 'status' argument to get status.",
                 ],
                 "value": false,
+            },
+            "toggle-tv.exec": {
+                "ext": "exec",
+                "help" : [
+                    "This toggles on or off the TV lines.",
+                    "Use with no argument to toggle on or off.",
+                    "Use 'status' argument to get status.",
+                ],
+                "value": true,
             }
         },
         "website"   : {
@@ -312,7 +322,7 @@ function GetDir(path){
                 checkingJson = GetPathJSON(pathTemp);
                 tempDirString = pathTemp;
             }
-            else if (pathArray[i] == "."){}
+            else if (pathArray[i] == "." && pathArray[i][pathArray[i].length-1] !== '/'){}
             else if (checkingJson[pathArray[i]] != undefined){
                 tempDirString += pathArray[i]+"/";
                 checkingJson = checkingJson[pathArray[i]];
@@ -323,7 +333,7 @@ function GetDir(path){
         }
     }
 
-    console.log("GetDir = " + tempDirString + ";" + dirExists)
+    //console.log("GetDir = " + tempDirString + ";" + dirExists)
     if (dirExists){
         return tempDirString;
     }
@@ -397,188 +407,211 @@ function Deconcat(string, char){
     // }
     return output;
 }
+function ChainCommands(){
+    let commands = Deconcat(input, ";")
+    for (let i = 0; i < commands.length; i++){
+        console.log(commands[i])
+        input = commands[i];
+        EnterPress();
+    }
+}
 //----------------------------------FIND WHERE TO GO----------------------
 
 
 function CommandStep0(input){
-    let successful = false;
-    let array = Deconcat(input, " ");
-
-    //check if it's a global
-    for (let i = 0; i < structure.globals.length; i++){
-        if (structure.globals[i] == array[0]){
-            successful = true;
-        }
+    //check if it's an array of commands
+    if(input.match(new RegExp("\;"))){
+        ChainCommands(input);
     }
+    else{
+        let successful = false;
+        let array = Deconcat(input, " ");
 
-    //run command if successful
-    if (successful)
-    {
-        if (array[0] == "help") //help
-        {
-            Help();
-        }
-        else if (array[0] == "cd") //cd
-        {
-            try {
-                ChangeDirectory(array[1]);
-            }
-            catch{
-                // let dirArray = Deconcat(array[1], "/")
-                //
-                // //if empty
-                // if (array[1] == "/"){
-                //     directoryString = "/"
-                //     directory = structure.root;
-                //     Log(input, 2)
-                //     UpdatePointer();
-                // }
-                //
-                // //if from root
-                // if (dirArray[0] == " ")
-                // {
-                //     let tempString = directoryString;
-                //     let tempDir = directory;
-                //
-                //     directoryString = "/"
-                //     directory = structure.root;
-                //     let success = true;
-                //
-                //     for (let i = 1; i < dirArray.length; i++) {
-                //         if (directory[dirArray[i]] != undefined){
-                //             console.log("trying " + i)
-                //             directory = directory[dirArray[i]];
-                //             directoryString += dirArray[i]+"/";
-                //             console.log("cd: success!")
-                //         }
-                //         else{
-                //             Log("Incorrect directory : " + i + " " + dirArray[i] + " " + directory[dirArray[i]], 1)
-                //             console.log("failed! "+i)
-                //             success = false;
-                //         }
-                //     }
-                //
-                //     if (success){
-                //         Log(input, 2)
-                //         UpdatePointer();
-                //     }
-                //     else{
-                //         directoryString = tempString;
-                //         directory = tempDir;
-                //         Log("Invalid Path : " + input, 1)
-                //     }
-                //
-                // }
-                //
-                // //if not from root
-                // else if (array[1] != "/"){
-                //     let tempString = directoryString;
-                //     let tempDir = directory;
-                //
-                //     let success = true;
-                //
-                //     for (let i = 0; i < dirArray.length; i++) {
-                //         if (directory[dirArray[i]] != undefined && dirArray[i].search(regex.file) == -1){
-                //             console.log("trying " + i)
-                //             directory = directory[dirArray[i]];
-                //             directoryString += dirArray[i]+"/";
-                //             console.log("cd: success!")
-                //         }
-                //         else{
-                //             console.log("failed! "+i)
-                //             success = false;
-                //         }
-                //     }
-                //
-                //     if (success){
-                //         Log(input, 2)
-                //         UpdatePointer();
-                //     }
-                //     else{
-                //         directoryString = tempString;
-                //         directory = tempDir;
-                //         Log("Invalid Path : " + input, 1)
-                //     }
-                // }
+        //check if it's a global
+        for (let i = 0; i < structure.globals.length; i++){
+            if (structure.globals[i] == array[0]){
+                successful = true;
             }
         }
-        else if (array[0] == "ls") //ls
+
+        //run command if successful
+        if (successful)
         {
-            if (array.length == 1){
-                Log("ls", 2)
-                Log("Contents of " + directoryString, 0)
-                for(let key in directory){
-                    Log("/"+key, 0);
+            if (array[0] == "help") //help
+            {
+                Help();
+            }
+            else if (array[0] == "cd") //cd
+            {
+                try {
+                    ChangeDirectory(array[1]);
+                }
+                catch{
+                    // let dirArray = Deconcat(array[1], "/")
+                    //
+                    // //if empty
+                    // if (array[1] == "/"){
+                    //     directoryString = "/"
+                    //     directory = structure.root;
+                    //     Log(input, 2)
+                    //     UpdatePointer();
+                    // }
+                    //
+                    // //if from root
+                    // if (dirArray[0] == " ")
+                    // {
+                    //     let tempString = directoryString;
+                    //     let tempDir = directory;
+                    //
+                    //     directoryString = "/"
+                    //     directory = structure.root;
+                    //     let success = true;
+                    //
+                    //     for (let i = 1; i < dirArray.length; i++) {
+                    //         if (directory[dirArray[i]] != undefined){
+                    //             console.log("trying " + i)
+                    //             directory = directory[dirArray[i]];
+                    //             directoryString += dirArray[i]+"/";
+                    //             console.log("cd: success!")
+                    //         }
+                    //         else{
+                    //             Log("Incorrect directory : " + i + " " + dirArray[i] + " " + directory[dirArray[i]], 1)
+                    //             console.log("failed! "+i)
+                    //             success = false;
+                    //         }
+                    //     }
+                    //
+                    //     if (success){
+                    //         Log(input, 2)
+                    //         UpdatePointer();
+                    //     }
+                    //     else{
+                    //         directoryString = tempString;
+                    //         directory = tempDir;
+                    //         Log("Invalid Path : " + input, 1)
+                    //     }
+                    //
+                    // }
+                    //
+                    // //if not from root
+                    // else if (array[1] != "/"){
+                    //     let tempString = directoryString;
+                    //     let tempDir = directory;
+                    //
+                    //     let success = true;
+                    //
+                    //     for (let i = 0; i < dirArray.length; i++) {
+                    //         if (directory[dirArray[i]] != undefined && dirArray[i].search(regex.file) == -1){
+                    //             console.log("trying " + i)
+                    //             directory = directory[dirArray[i]];
+                    //             directoryString += dirArray[i]+"/";
+                    //             console.log("cd: success!")
+                    //         }
+                    //         else{
+                    //             console.log("failed! "+i)
+                    //             success = false;
+                    //         }
+                    //     }
+                    //
+                    //     if (success){
+                    //         Log(input, 2)
+                    //         UpdatePointer();
+                    //     }
+                    //     else{
+                    //         directoryString = tempString;
+                    //         directory = tempDir;
+                    //         Log("Invalid Path : " + input, 1)
+                    //     }
+                    // }
                 }
             }
-            else{
-                let path = GetDir(array[1]);
-                if (path != "error")
-                {
-                    Log(input, 2);
-                    Log("Contents of " + path, 0);
-
-                    let jsonObserver = GetPathJSON(path);
-                    for(let key in jsonObserver)
-                    {
+            else if (array[0] == "ls") //ls
+            {
+                if (array.length == 1){
+                    Log("ls", 2)
+                    Log("Contents of " + directoryString, 0)
+                    for(let key in directory){
                         Log("/"+key, 0);
                     }
                 }
                 else{
-                    Log("Invalid path : " + array[1], 1);
+                    let path = GetDir(array[1]);
+                    if (path != "error")
+                    {
+                        Log(input, 2);
+                        Log("Contents of " + path, 0);
+
+                        let jsonObserver = GetPathJSON(path);
+                        for(let key in jsonObserver)
+                        {
+                            Log("/"+key, 0);
+                        }
+                    }
+                    else{
+                        Log("Invalid path : " + array[1], 1);
+                    }
                 }
+
+            }
+            else if (array[0] == "clear") //clear
+            {
+                let logs = document.getElementById("logs")
+                logs.innerHTML = "";
+            }
+            else if (array[0] == "open") //open
+            {
+                OpenPage(array);
+            }
+            else if (array[0] == "alt")//alternative input method
+            {
+                Alt();
+            }
+        }
+        else
+        {
+            if (directory[array[0]+".exec"].ext == "exec") //handle .exec files
+            {
+                try
+                {
+                    if (array[0] == "get-price"){
+                        GetPrice(array[1]);
+                    }
+                    else if (array[0] == "regex"){
+                        RegexSearch(array[1], array[2]);
+                    }
+                    else if (array[0] == "play"){
+                        Play(array[1]);
+                    }
+                    else if (array[0] == "describe"){
+                        Describe(array[1]);
+                    }
+                    else if (array[0] == "stop"){
+                        Stop(array[1]);
+                    }
+                    else if (array[0] == "toggle-cursor"){
+                        ToggleCursor(array[1]);
+                    }
+                    else if (array[0] == "toggle-tv"){
+                        ToggleTV(array[1]);
+                    }
+                    else{
+                        Log("File " + array[0] + ".exec may be corrupted or contain invalid data. Execution failed.", 1);
+                    }
+                }
+                catch
+                {
+                    Log("Invalid command arguments in : " + input, 1);
+                }
+            }
+            else //if nothing found
+            {
+                Log("Invalid Command : " + input, 1)
             }
 
         }
-        else if (array[0] == "clear") //clear
-        {
-            let logs = document.getElementById("logs")
-            logs.innerHTML = "";
-        }
-        else if (array[0] == "open") //open
-        {
-            OpenPage(array);
-        }
     }
-    else
-    {
-        if (directory[array[0]+".exec"].ext == "exec") //handle .exec files
-        {
-            try
-            {
-                if (array[0] == "get-price"){
-                    GetPrice(array[1]);
-                }
-                else if (array[0] == "regex"){
-                    RegexSearch(array[1], array[2]);
-                }
-                else if (array[0] == "toggle-cursor"){
-                    ToggleCursor(array[1]);
-                }
-                else if (array[0] == "play"){
-                    Play(array[1]);
-                }
-                else if (array[0] == "describe"){
-                    Describe(array[1]);
-                }
-                else if (array[0] == "stop"){
-                    Stop(array[1]);
-                }
-                else{
-                    Log("File " + array[0] + ".exec may be corrupted or contain invalid data. Execution failed.", 1);
-                }
-            }
-            catch
-            {
-                Log("Invalid command arguments in : " + input, 1);
-            }
-        }
-        else //if nothing found
-        {
-            Log("Invalid Command : " + input, 1)
-        }
 
-    }
+
 }
 function Help(){
     Log("help", 2);
@@ -587,11 +620,20 @@ function Help(){
     Log("ls - List directories", 0);
     Log("clear - Clear console", 0);
     Log("open - Open file as HTML equivalent", 0)
+    Log("alt - Run a command through a prompt window (use this on other browsers than chrome or to use chained commands)", 0)
+    Log("-----How to use 'alt'-----", 0)
+    Log("You can use it to paste commands people send you.",0);
+    Log("You can chain commands by separating them with ';'",0)
     Log("-----file extensions-----", 0)
     Log(".html : Openable page", 0)
     Log(".data : Data for the parent folder (often URLs)", 0)
     Log(".exec : Folder-specific command", 0)
     Log(".audio : audio file...", 0)
+}
+function Alt(){
+    input = prompt("Enter your command:")
+    if (input === null || input === undefined) {input = ""}
+    EnterPress();
 }
 function ChangeDirectory(path){
     path = GetDir(path);
@@ -714,8 +756,16 @@ function Play(file){
                 audio = new Audio(directory[file]["file-path"])
                 audio.play();
             }
+            else if (file.match(/^[a-zA-Z/-]+\.audio\/$/i)){
+                Log("play " + file, 2);
+                Log("Playing : " + file, 0);
+                console.log("playing audio...")
+                let dir = GetPathJSON(file);
+                audio = new Audio(dir["file-path"])
+                audio.play();
+            }
             else{
-                Log("Invalid file name : " + file, 1);
+                Log("Invalid file name or path : " + file, 1);
             }
         }
         catch{
@@ -772,6 +822,34 @@ function ToggleCursor(input){
         }
         else{
             directory["toggle-cursor.exec"].value = true;
+        }
+    }
+    else {
+        Log("Error, invalid argument : " + input, 1)
+    }
+
+}
+function ToggleTV(input){
+    if (input == "help"){
+        Log("toggle-tv help", 2)
+        for (let i = 0; i < directory["toggle-tv.exec"].help.length; i++){
+            Log(directory["toggle-tv.exec"].help[i], 0)
+        }
+    }
+    else if (input == "status"){
+        Log("toggle-tv status", 2);
+        Log("value : " + directory["toggle-tv.exec"].value, 0)
+    }
+    else if (input == undefined){
+        let tvEffect = document.getElementById("tv-effect")
+        Log("toggle-tv", 2)
+        if (directory["toggle-tv.exec"].value){
+            tvEffect.style.display = "none";
+            directory["toggle-tv.exec"].value = false;
+        }
+        else{
+            tvEffect.style.display = "block";
+            directory["toggle-tv.exec"].value = true;
         }
     }
     else {
